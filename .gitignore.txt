@@ -1,0 +1,46 @@
+# 🛠️ Build output
+/Debug/
+/Release/
+
+# 🚫 STM32CubeIDE project settings
+.settings/
+.cproject
+.project
+*.launch
+*.log
+
+# 🔄 Auto-generated files
+*.i
+*.d
+*.o
+*.elf
+*.map
+*.hex
+*.bin
+*.list
+
+# 💾 OS-generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+
+# 🔙 Backup files
+*~
+*.bak
+*.tmp
+
+# 📦 Compressed files
+*.zip
+*.tar.gz
+*.7z
+*.rar
+
+# 📘 Keil / IAR / Others (nếu dùng)
+*.uvoptx
+*.uvprojx
+*.uvopt
+*.uvproj
+*.dep
+*.ewp
+*.eww
+*.ewd

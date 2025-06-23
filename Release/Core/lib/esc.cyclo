@@ -1,0 +1,5 @@
+../Core/lib/esc.c:19:6:calib_esc	1
+../Core/lib/esc.c:12:6:esc_init	1
+../Core/lib/esc.c:38:6:control_esc	1
+../Core/lib/esc.c:27:6:start_esc	2
+../Core/lib/esc.c:43:6:MotorDriver	2

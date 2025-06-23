@@ -1,0 +1,2 @@
+../Core/lib/kalman.c:63:6:kalman_init	0	static
+../Core/lib/kalman.c:72:7:kalman_update	0	static

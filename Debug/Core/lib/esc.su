@@ -1,0 +1,3 @@
+../Core/lib/esc.c:12:6:esc_init	8	static
+../Core/lib/esc.c:19:6:calib_esc	8	static
+../Core/lib/esc.c:27:6:MotorDriver	16	static
