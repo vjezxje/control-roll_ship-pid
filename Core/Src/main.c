@@ -83,64 +83,65 @@ bno055_t sensor;
 error_bno err;
 
 bno055_euler_t eul_raw 			= { 0, 0, 0 };
-bno055_euler_t eul_caculate 	= { 0, 0, 0 };
-bno055_euler_t eul_data_offset 	= { 0, 0, 0 };
+bno055_euler_t eul_caculate 		= { 0, 0, 0 };
+bno055_euler_t eul_data_offset 		= { 0, 0, 0 };
 
 bno055_vec3_t acc_raw 			= { 0, 0, 0 };
 bno055_vec3_t acc_caculate 		= { 0, 0, 0 };
-bno055_vec3_t acc_data_offset 	= { 0, 0, 0 };
+bno055_vec3_t acc_data_offset 		= { 0, 0, 0 };
 
 bno055_vec3_t gyr_raw 			= { 0, 0, 0 };
 bno055_vec3_t gyr_caculate 		= { 0, 0, 0 };
-bno055_vec3_t gyr_data_offset 	= { 0, 0, 0 };
+bno055_vec3_t gyr_data_offset 		= { 0, 0, 0 };
 
 bno055_vec3_t gyr 			= { 0, 0, 0 };
 
 float acc_x_filter  			= 0.0f;
-float gyr_y_deg  				= 0.0f,  	gyr_y_filter  		= 0.0f;
-float eul_roll_filter 			= 0.0f, 	eul_pitch_filter 	= 0.0f;
-float eul_roll_deg 				= 0.0f, 	eul_pitch_deg 		= 0.0f;
-float offset_roll 				= 0.0f, 	offset_pitch 		= 0.0f;
-float offset_acc 				= 0.0f;
+float gyr_y_deg  			= 0.0f,  		gyr_y_filter  		= 0.0f;
+float eul_roll_filter 			= 0.0f, 		eul_pitch_filter 	= 0.0f;
+float eul_roll_deg 			= 0.0f, 		eul_pitch_deg 		= 0.0f;
+float offset_roll 			= 0.0f, 		offset_pitch 		= 0.0f;
+float offset_acc 			= 0.0f;
 
 float Wave_BNO = 0.0f, Wave_flash = 0.0f;
 
 float  dt;
 double Wave_pulse_omega = 0, 	Wave_pulse_angle 	= 0;
-double pulse_omega 		= 0, 	err_pulse_omega 	= 0, 	pulse_angle 	= 0, err_pulse_angle 	= 0;
-int16_t encoder_omega 	= 0, 	encoder_pre_omega 	= 0, 	encoder_angle 	= 0, encoder_pre_angle 	= 0;
-float omega_raw 		= 0.0f, omega_raw_pre 		= 0.0f, omega_filter	= 0.0f;
-float angle 			= 0.0f, omega 				= 0.0f;
+double pulse_omega 	= 0, 	err_pulse_omega 	= 0, 		pulse_angle 	= 0, 	err_pulse_angle 	= 0;
+int16_t encoder_omega 	= 0, 	encoder_pre_omega 	= 0, 		encoder_angle 	= 0, 	encoder_pre_angle 	= 0;
+float omega_raw 	= 0.0f, omega_raw_pre 		= 0.0f, 	omega_filter	= 0.0f;
+float angle 		= 0.0f, omega 			= 0.0f;
 float angle_pendulum 	= 0.0f, angle_pe_rad 		= 0.0f;
 
-float F_spinner = 14.121576f;				// F = mg = 1.44 * 9.8066
+float F_spinner = 14.121576f;		// F = mg = 1.44 * 9.8066
 
-float Output_PID_omega = 0, Output_PID_angle = 0,  Output_keep= 0, Output_PID = 0;
-float  SP_omega 	= 0.0f, SP_angle = 0.0f, SP_angle_save 	= 0.0f;
-float  E_angle 		= 0.0f,	E_omega  = 0.0f;
+float Output_PID_omega  = 0,		Output_PID_angle = 0,		Output_keep	= 0, 		Output_PID = 0;
+float  SP_omega 	= 0.0f, 	SP_angle 	 = 0.0f, 	SP_angle_save 	= 0.0f;
+float  E_angle 		= 0.0f,		E_omega  	 = 0.0f;
 
 float  Kp_angle 	= 10.0f, 	Kp_omega = 2.0f;
 
-float a_wave 	= 0.0f, 		 a_Rg 	= 0.0f, 	K1 		= 0.0f,	 K2 	 = 0.0f;
+float a_wave 		= 0.0f, 	a_Rg 	 = 0.0f, 		K1 = 0.0f,	K2 = 0.0f;
 float Ls 		= 0.2272125f; 			// Ls = Is * omega_s
-float Is 		= 0.0006256619f, dtL	= 0.0f, 	omega_G = 0.0f,  omega_G_Degrees = 0.0f 	;  //[kg/m2]
-float Ixx 	 	= 0.0012513238f, W 		= 10.0f, 	Fcut 	= 0.0f;
+float Is 		= 0.0006256619f, dtL	= 0.0f, 	omega_G = 0.0f,  omega_G_Degrees = 0.0f ;  //[kg/m2]
+float Ixx 	 	= 0.0012513238f, W 	= 10.0f, 	Fcut 	= 0.0f;
 float GM 		= 0.00514652956f;
 
 #ifdef mainland
 float K_omega_G			= 0.24f;
 float K_aRg 			= 1.0f;
-float CutOffFrequency 	= 0.75f;
-float beta 				= 30.0f;
+float CutOffFrequency 		= 0.75f;
+float beta 			= 30.0f;
 #endif
 
 #ifdef Underwater
 float K_omega_G		= 0.335f;
-float K_aRg 	= 1.0f;
-float CutOffFrequency = 2.5f, 	beta = 15.0f;
+float K_aRg 		= 1.0f;
+float CutOffFrequency   = 2.5f;
+beta 			= 15.0f;
 #endif
 
-uint8_t	tx_data[32];
+uint8_t	tx_data[32];		//rf
 data_t data_out;
 /* USER CODE END 0 */
 
@@ -181,41 +182,40 @@ int main(void)
   MX_SPI1_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-  	esc_init();												//khởi tạo esc
+  	esc_init();		
 	HAL_Delay(100);
-
-	calib_esc();											//calib esc
+	calib_esc();							//esc callib								
 	HAL_Delay(1000);
 
-	BNO_init();												// kết nối cảm biến
+	BNO_init();							// connert BNO
 	HAL_Delay(100);
 
-	sensor.euler(&sensor, &eul_raw);						// lấy giá trị góc euler
+	sensor.euler(&sensor, &eul_raw);				// get value euler
 	euler_get_value_offset(&eul_data_offset, eul_raw);		// offset euler
 
-	sensor.acc(&sensor, &acc_raw);							// lấy giá trị gia tốc
+	sensor.acc(&sensor, &acc_raw);					// get value acc
 	acc_get_value_offset(&acc_data_offset,  acc_raw);		// offset acc
 
-	sensor.gyro(&sensor, &gyr_raw);							// lấy giá trị gia tốc
-	gyr_get_value_offset(&gyr_data_offset,  gyr_raw);		// offset acc
+	sensor.gyro(&sensor, &gyr_raw);					// get value gyr
+	gyr_get_value_offset(&gyr_data_offset,  gyr_raw);		// offset gyr
 
-	HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_1); 		// khởi tạo encoder timer3 kenh 1
-	HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_2); 		// khoi tao encoder timer3 kenh 2
+	HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_1); 		// init timer3-1 -- encoder
+	HAL_TIM_Encoder_Start_IT(&htim3, TIM_CHANNEL_2); 		// init timer3-2 -- encoder
 
-	HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_1); 		// khởi tạo encoder timer8 kenh 1
-	HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_2); 		// khoi tao encoder timer8 kenh 2
+	HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_1); 		// init timer8-1 -- encoder
+	HAL_TIM_Encoder_Start_IT(&htim8, TIM_CHANNEL_2); 		// init timer8-2 -- encoder
 
-	HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_4);			// khởi tạo pwm timer4 kênh 4
+	HAL_TIM_PWM_Start_IT(&htim4, TIM_CHANNEL_4);			// init timer4-4 - pwm
 
-	HAL_TIM_Base_Start_IT(&htim2);						  	// khởi tạo timer2 cho viec ngat timer
+	HAL_TIM_Base_Start_IT(&htim2);					// init timer2 - interrup
 
-	Fcut = 1 - exp(-0.01*2.0f*M_PI*CutOffFrequency);
-
+	Fcut = 1 - exp(-0.01*2.0f*M_PI*CutOffFrequency);		// frequency cut 
+// init  RF
 #ifdef RECEIVER
 	nrf24l01p_rx_init(2500, _1Mbps);
 #endif
 #ifdef TRANSMITTER
-	nrf24l01p_tx_init(2500, _1Mbps);		// khởi tạo RF
+	nrf24l01p_tx_init(2500, _1Mbps);		
 #endif
   /* USER CODE END 2 */
 
@@ -223,29 +223,29 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 1)		 		//kiểm tra công tắc esc
+	  if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == 1)		 		//check sw esc
 	  {
-		  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);		// đèn 15 sáng
-		  __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 1200);		// xuất duty esc 1200
+		  HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_SET);		// led 15-1
+		  __HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 1200);		// out duty esc 1200
 	  }
 	  else
 	  {
-		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);		// đèn 15 tắt
-		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 0);			// xuất duty esc 0
+		HAL_GPIO_WritePin(GPIOD, GPIO_PIN_15, GPIO_PIN_RESET);		// led 15 - 0
+		__HAL_TIM_SET_COMPARE(&htim5, TIM_CHANNEL_4, 0);		// out duty esc 0
 	  }
 
 	#ifdef RECEIVER
 	  // Nothing to do
 	#endif
 
-	#ifdef TRANSMITTER								// gán dữ liệu gửi
+	#ifdef TRANSMITTER								// assign data to send
 	 data_out.eul_roll_deg		= eul_roll_deg;
 	 data_out.eul_pitch_deg 	= eul_pitch_deg;
 	 data_out.acc_x_filter 		= acc_x_filter;
 	 data_out.omega_filter		= omega_filter;
-	 data_out.angle 			= angle;
+	 data_out.angle 		= angle;
 	 data_out.angle_pendulum 	= angle_pendulum;
-	 data_out.SP_angle 			= SP_angle;
+	 data_out.SP_angle 		= SP_angle;
 	 data_out.gyr_y_deg 		= gyr_y_deg;
 	 _pack_data(tx_data, data_out);					// đóng gói dữ liệu gửi
 	 nrf24l01p_tx_transmit(tx_data);				// gửi dữ liệu
@@ -493,18 +493,18 @@ void BNO_init()
 {
 
 	HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_RESET);
-	sensor.i2c = &hi2c2;   									 // khai báo kết nối i2c
-	sensor.addr = 0x28;	 									 // kết nối i2c ở địa chỉ 0x28
-	sensor.mode = BNO_MODE_NDOF_FMC_OFF;					 // chế độ hoạt động của cảm biến
+	sensor.i2c = &hi2c2;   									 // connect i2c
+	sensor.addr = 0x28;	 								 // connect i2c at 0x28
+	sensor.mode = BNO_MODE_NDOF_FMC_OFF;							 // operating mode BNO
 	sensor._temp_unit = BNO_TEMP_UNIT_C;
 	HAL_Delay(1000);
-	if ((err = bno055_init(&sensor)) == BNO_OK) 				 //kiểm tra kết nối cảm biến
+	if ((err = bno055_init(&sensor)) == BNO_OK) 						 //check connert BNO
 	{
-		 HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);	// khi kết nối được cảm biến - sáng đèn 12.
+		 HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, GPIO_PIN_SET);				// led 12 - 1
 	}
-	err = bno055_set_unit(&sensor, BNO_TEMP_UNIT_C, BNO_GYR_UNIT_RPS, BNO_ACC_UNITSEL_M_S2, BNO_EUL_UNIT_RAD);
+	err = bno055_set_unit(&sensor, BNO_TEMP_UNIT_C, BNO_GYR_UNIT_RPS, BNO_ACC_UNITSEL_M_S2, BNO_EUL_UNIT_RAD);		// set unit value
 }
-float __low_pass_filter(float input, float previous_output, float alpha)
+float __low_pass_filter(float input, float previous_output, float alpha)			
 {
 	return alpha * input + (1 - alpha) * previous_output;
 }
